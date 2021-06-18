@@ -1,0 +1,20 @@
+{
+  "name": "media-dot-net",
+  "version": "1.0.0",
+  "description": "Flights Airport Filter App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Flight",
+    "Airport",
+    "Media.net"
+  ],
+  "author": "Shivraj koli",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
+  }
+}
