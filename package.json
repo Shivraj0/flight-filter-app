@@ -1,15 +1,15 @@
 {
-  "name": "media-dot-net",
+  "name": "Flight Filter App",
   "version": "1.0.0",
   "description": "Flights Airport Filter App",
   "main": "index.js",
+  "git": "https://github.com/Shivraj0/flight-filter-app.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "Flight",
-    "Airport",
-    "Media.net"
+    "Airport"    
   ],
   "author": "Shivraj koli",
   "license": "ISC",
