@@ -1,11 +1,11 @@
 {
-  "name": "Flight Filter App",
+  "name": "flight-filter-app",
   "version": "1.0.0",
   "description": "Flights Airport Filter App",
   "main": "index.js",
   "git": "https://github.com/Shivraj0/flight-filter-app.git",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js"
   },
   "keywords": [
     "Flight",
