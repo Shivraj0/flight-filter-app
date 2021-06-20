@@ -137,6 +137,7 @@ function renderData(dataList) {
 
 // Function to render data on Initial render.
 function renderInitialData(tableData) {
+    if(tableData.length === 0) return;
 
     let bodyElement = document.querySelector('.js-table-body');
     bodyElement.innerHTML = '';
