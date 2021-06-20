@@ -149,6 +149,7 @@ function renderInitialData(tableData) {
     setFooterCountData();
 }
 
+// Function for pagination event and reset start end values.
 function paginationEvent() {
     var paginationArrows = document.querySelectorAll('.js-pagination-arrow');
     paginationArrows.forEach(element => element.addEventListener('click', function arrowClick(event) {
@@ -168,6 +169,7 @@ function paginationEvent() {
     }));
 }
 
+// Function to render current session data.
 function renderCurrentSession() {
     // Retrieve session data
     let data = sessionStorage.getItem("DATA");
@@ -182,7 +184,7 @@ function renderCurrentSession() {
 
     if(Object.keys(options).length !== 0) {
         for (const [key, value] of Object.entries(options)) {
-            optionsList.querySelector(`[data-label=${key}]`).dataset.checked = "true";
+            optionsList.querySelector(`[data-label=${key}]`).dataset.checked = `${value}`;
         }    
     }
     
