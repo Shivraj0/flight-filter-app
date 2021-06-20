@@ -64,7 +64,11 @@ function filterDataOnCheck() {
     const filteredData = DATA.filter(element => checkedOptions.hasOwnProperty(element.type));
     if(Object.keys(checkedOptions).length !== 0)  {
         DATA_CLONE = filteredData;
+    } else {
+        DATA_CLONE = DATA;
     }
+
+    sessionStorage.setItem("options", JSON.stringify(checkedOptions));
 
     renderData(DATA_CLONE);
     
@@ -111,6 +115,10 @@ function setFooterCountData() {
     if(minCountPagination !== null || minCountPagination !== undefined) minCountPagination.innerText = minCount;
     if(maxCountPagination !== null || maxCountPagination !== undefined) maxCountPagination.innerText = maxCount;
     if(totalCountPagination !== null || totalCountPagination !== undefined) totalCountPagination.innerText = totalCount;
+
+    sessionStorage.setItem("start", String(start));
+    sessionStorage.setItem("end", String(end));
+    sessionStorage.setItem("total", String(DATA_CLONE.length));
 }
 
 // Function to render data on input search.
@@ -124,6 +132,7 @@ function renderData(dataList) {
     }
 
     setFooterCountData();
+    sessionStorage.setItem("DATA", JSON.stringify(DATA_CLONE));
 }
 
 // Function to render data on Initial render.
@@ -144,8 +153,10 @@ function paginationEvent() {
     var paginationArrows = document.querySelectorAll('.js-pagination-arrow');
     paginationArrows.forEach(element => element.addEventListener('click', function arrowClick(event) {
         if(event.target.dataset.direction === 'right') {
-            start += 4;
-            end += 4;
+            if(start <= DATA_CLONE.length - 4) {
+                start += 4;
+                end += 4;
+            }
         } else {
             if(start !== 0) {
                 start -= 4;
@@ -157,8 +168,35 @@ function paginationEvent() {
     }));
 }
 
+function renderCurrentSession() {
+    // Retrieve session data
+    let data = sessionStorage.getItem("DATA");
+    data = JSON.parse(data);
+    DATA_CLONE = data;
+    renderInitialData(DATA_CLONE); // Render against session data to keep ui persistent.
+
+    let options = sessionStorage.getItem("options");
+    options = JSON.parse(options);
+
+    let optionsList = document.querySelector('.js-checkbox-list');
+
+    if(Object.keys(options).length !== 0) {
+        for (const [key, value] of Object.entries(options)) {
+            optionsList.querySelector(`[data-label=${key}]`).dataset.checked = "true";
+        }    
+    }
+    
+    start = Number(sessionStorage.getItem("start"));
+    end = Number(sessionStorage.getItem("end"));
+}
+
 function registerEvents() {
-    renderInitialData(DATA);
+    if(performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+        renderCurrentSession();
+    } else {
+        renderInitialData(DATA);
+    }
+
     inputSearchEvent();
     inputCheckEvent();
     paginationEvent();
