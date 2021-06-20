@@ -2,6 +2,11 @@ import { DATA } from '../../data/airports.js';
 import { DATA_COLUMNS } from '../constants/index.js';
 import { getDataOnEvent } from '../utils/index.js';
 
+// Global Vairables
+var start = 0;
+var end = 3;
+var DATA_CLONE = DATA;
+
 // Create and render new list of elements in table based on user input.
 function fetchData(event) {
     const inputValue = event.target.value.toLowerCase();    
@@ -26,13 +31,15 @@ function fetchData(event) {
         });
 
         if(filteredList.length > 0) {
-            renderData(filteredList);
+            DATA_CLONE = filteredList
+            renderData(DATA_CLONE);
         }
     }
 
     // This is required since when user cleared the input field we need to render the initial data as it is.
     if(inputValue === '') {
-        renderData(DATA);
+        DATA_CLONE = DATA;
+        renderData(DATA_CLONE);
     }
 }
 
@@ -55,7 +62,11 @@ function filterDataOnCheck() {
         targetElement.dataset.checked === 'true' ? checkedOptions[targetElement.dataset.label] = true : null})
 
     const filteredData = DATA.filter(element => checkedOptions.hasOwnProperty(element.type));
-    Object.keys(checkedOptions).length === 0 ? renderData(DATA) : renderData(filteredData);
+    if(Object.keys(checkedOptions).length !== 0)  {
+        DATA_CLONE = filteredData;
+    }
+
+    renderData(DATA_CLONE);
     
     console.log(checkedOptions); // Check console for checked options.
     console.log(filteredData); // Check console for filtered list.
@@ -87,15 +98,32 @@ function setTableData(dataObject) {
     return rowElement;
 }
 
+function setFooterCountData() {
+    
+    let minCountPagination = document.querySelector('.js-min-count');
+    let maxCountPagination = document.querySelector('.js-max-count');
+    let totalCountPagination = document.querySelector('.js-total-count');
+
+    const minCount = start + 1;
+    const maxCount = end + 1;
+    const totalCount = DATA_CLONE.length;
+
+    if(minCountPagination !== null || minCountPagination !== undefined) minCountPagination.innerText = minCount;
+    if(maxCountPagination !== null || maxCountPagination !== undefined) maxCountPagination.innerText = maxCount;
+    if(totalCountPagination !== null || totalCountPagination !== undefined) totalCountPagination.innerText = totalCount;
+}
+
 // Function to render data on input search.
 function renderData(dataList) {
     let bodyElement = document.querySelector('.js-table-body');
     bodyElement.innerHTML = '';
 
-    for(let i = 0 ; i < dataList.length && i < 4 ; i++) {
+    for(let i = start ; i < dataList.length && i <= end ; i++) {
         const rowElement = setTableData(dataList[i]);
         bodyElement.appendChild(rowElement);
     }
+
+    setFooterCountData();
 }
 
 // Function to render data on Initial render.
@@ -104,16 +132,36 @@ function renderInitialData(tableData) {
     let bodyElement = document.querySelector('.js-table-body');
     bodyElement.innerHTML = '';
 
-    for(let i = 0 ; i < 4 ; i++) {
+    for(let i = start ; i <= end ; i++) {
         const rowElement = setTableData(tableData[i]);
         bodyElement.appendChild(rowElement);
     }
+    
+    setFooterCountData();
+}
+
+function paginationEvent() {
+    var paginationArrows = document.querySelectorAll('.js-pagination-arrow');
+    paginationArrows.forEach(element => element.addEventListener('click', function arrowClick(event) {
+        if(event.target.dataset.direction === 'right') {
+            start += 4;
+            end += 4;
+        } else {
+            if(start !== 0) {
+                start -= 4;
+                end -= 4;
+            }
+        }
+
+        renderData(DATA_CLONE);
+    }));
 }
 
 function registerEvents() {
     renderInitialData(DATA);
     inputSearchEvent();
     inputCheckEvent();
+    paginationEvent();
 }
 
 window.addEventListener('load', registerEvents);

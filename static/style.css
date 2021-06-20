@@ -17,7 +17,7 @@
 
 .wrapper {    
     margin: auto 0;
-    padding: 16px;
+    padding: 28px;
     background-color: #fff;
 }
 
@@ -83,7 +83,7 @@
 .filter-type__list-item {
     display: inline-flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     position: relative;
     user-select: none;
 }
@@ -166,8 +166,90 @@ tbody tr:nth-child(odd) {
 
 /* Wrapper body section end. */
 
+/* Wrapper footer section start. */
+
+.wrapper-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+}
+
+.footer__arrow {
+    height: 14px;
+    width: 14px;
+    display: inline-block;
+    position: relative;
+    border-bottom: 4px solid #000;
+    cursor: pointer;
+}
+
+.footer__arrow::after {
+    content: '';
+    width: 18px;
+    height: 4px;
+    position: absolute;
+    top: 4px;
+    background-color: #000;
+}
+
+.footer__arrow--left {
+    border-left: 4px solid #000;
+    transform: rotate(45deg);
+}
+
+.footer__arrow--left::after {
+    left: -5px;
+    transform: rotate(-45deg);
+}
+
+.footer__arrow--right::after {
+    right: -5px;
+    transform: rotate(45deg);
+}
+
+.footer__arrow--right {
+    border-right: 4px solid #000;
+    transform: rotate(-45deg);
+}
+
+/* Wrapper footer section start. */
+
 @media only screen and (max-width: 800px) {
     .container {
         width: 100%;
+    }
+
+    .filter {
+        padding-top: 24px;
+        flex-direction: column;
+    }
+
+    .filter-search,
+    .filter-type {
+        width: 100%;
+    }
+
+    .filter-search {
+        padding-top: 16px;
+        padding-left: 0;
+    }
+
+    .filter-type__list-item {
+        width: 49%;
+    }
+
+    .filter-type__list-item:not(:first-child) {
+        padding-left: 0;
+    }
+
+    .wrapper-body {
+        overflow: scroll;
+    }
+
+    ::-webkit-scrollbar {
+        height: 0;
+        width: 0;
+        display: none;
     }
 }
